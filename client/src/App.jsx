@@ -63,7 +63,8 @@ fetch(`${API_URL}/api/users`)
       if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
       if (searchTerm.trim()) params.append('search', searchTerm.trim());
 
-const url = `${API_URL}/api/auctions${params.toString() ? `?${params.toString()}` : ''}`;      const res = await fetch(url);
+const url = `${API_URL}/api/auctions${params.toString() ? `?${params.toString()}` : ''}`;   
+   const res = await fetch(url);
       const data = await res.json();
 
       if (data.success) {
