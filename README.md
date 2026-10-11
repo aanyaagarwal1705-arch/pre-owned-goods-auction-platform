@@ -97,25 +97,3 @@ Open your browser at: **`http://localhost:5173`**
 
 ---
 
-## DBMS Viva Questions & Answers Cheat Sheet
-
-### 1. Why use a Connection Pool instead of single connections?
-* In `server/db.js`, `mysql.createPool` manages a pool of reusable connections.
-* Rather than establishing and tearing down a TCP connection on every HTTP request, connections are borrowed and released. This drastically reduces connection overhead and protects MySQL from connection exhaustion.
-
-### 2. How did you handle Concurrency in Bidding?
-* In `POST /api/bids`, we use a transaction and **Pessimistic Row Locking** with `SELECT ... FOR UPDATE`.
-* If two buyers bid at the exact same millisecond, row locking forces the second query to wait until the first transaction commits. This prevents race conditions and ensures every bid is evaluated against the true latest highest bid.
-
-### 3. Where are ACID Properties demonstrated?
-* **Atomicity & Consistency**:
-  * In `POST /api/products`, inserting into `products` and `auctions` happens inside `connection.beginTransaction()`. If either fails, `connection.rollback()` reverts all changes, preventing orphan products without auctions.
-  * In `POST /api/bids`, row locking, validation, and insertion are atomic.
-
-### 4. How did you structure your SQL queries for the Auction Feed?
-* In `GET /api/auctions`, we use `INNER JOIN` to associate foreign keys across `auctions`, `products`, `categories`, and `users`.
-* To get the current highest bid without violating `ONLY_FULL_GROUP_BY` in MySQL 8, we perform a `LEFT JOIN` on a **derived table subquery** (`SELECT auction_id, MAX(bid_amount), COUNT(bid_id) FROM bids GROUP BY auction_id`).
-* We use `COALESCE(highest_bid, starting_price)` to default to the starting price when no bids exist.
-
-### 5. How is SQL Injection prevented?
-* All queries use **parameterized queries** with placeholders (`?`), e.g. `pool.query('SELECT * FROM auctions WHERE auction_id = ?', [id])`. The MySQL driver safely escapes all inputs.
