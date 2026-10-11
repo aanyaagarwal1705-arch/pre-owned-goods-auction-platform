@@ -6,7 +6,7 @@ import Navbar from './components/Navbar.jsx';
 import AuctionCard from './components/AuctionCard.jsx';
 import AuctionDetailModal from './components/AuctionDetailModal.jsx';
 import CreateListingModal from './components/CreateListingModal.jsx';
-
+const API_URL = import.meta.env.VITE_API_URL || '';
 export default function App() {
   // Core state
   const [auctions, setAuctions] = useState([]);
@@ -29,8 +29,8 @@ export default function App() {
   const fetchMetadata = async () => {
     try {
       const [catsRes, usersRes] = await Promise.all([
-        fetch('/api/categories'),
-        fetch('/api/users')
+        fetch(`${API_URL}/api/categories`),
+fetch(`${API_URL}/api/users`)
       ]);
 
       const [catsData, usersData] = await Promise.all([
@@ -63,8 +63,7 @@ export default function App() {
       if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
       if (searchTerm.trim()) params.append('search', searchTerm.trim());
 
-      const url = `/api/auctions${params.toString() ? `?${params.toString()}` : ''}`;
-      const res = await fetch(url);
+const url = `${API_URL}/api/auctions${params.toString() ? `?${params.toString()}` : ''}`;      const res = await fetch(url);
       const data = await res.json();
 
       if (data.success) {
