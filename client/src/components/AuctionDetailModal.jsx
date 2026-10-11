@@ -277,29 +277,28 @@ export default function AuctionDetailModal({
                           className="quick-inc-btn"
                           onClick={() => setBidAmount(String(Number(auction.min_next_bid)))}
                         >
-                          Min (+₹0)
+                        Min (₹{Number(auction.min_next_bid).toLocaleString('en-IN')}) 
                         </button>
-                        <button
-                          type="button"
-                          className="quick-inc-btn"
-                          onClick={() => setBidAmount(String(Number(auction.min_next_bid) + 50))}
-                        >
-                          +₹50
-                        </button>
-                        <button
-                          type="button"
-                          className="quick-inc-btn"
-                          onClick={() => setBidAmount(String(Number(auction.min_next_bid) + 100))}
-                        >
-                          +₹100
-                        </button>
-                        <button
-                          type="button"
-                          className="quick-inc-btn"
-                          onClick={() => setBidAmount(String(Number(auction.min_next_bid) + 500))}
-                        >
-                          +₹500
-                        </button>
+                        
+{[1, 2, 5].map((multiplier) => {
+  const increment = Number(auction.min_bid_increment) * multiplier;
+
+  return (
+    <button
+      key={multiplier}
+      type="button"
+      className="quick-inc-btn"
+      onClick={() =>
+        setBidAmount(
+          String(Number(auction.min_next_bid) + increment)
+        )
+      }
+    >
+      +₹{increment.toLocaleString('en-IN')}
+    </button>
+  );
+})}
+
                       </div>
                     )}
 
