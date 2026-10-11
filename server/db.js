@@ -18,6 +18,9 @@ const pool = mysql.createPool({
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'preowned_auction_db',
   port: Number(process.env.DB_PORT) || 3306,
+    ssl: process.env.DB_HOST && process.env.DB_HOST !== 'localhost'
+    ? { minVersion: 'TLSv1.2' }
+    : undefined,
   waitForConnections: true,
   connectionLimit: 10,       // Maximum active connections at any time
   queueLimit: 0              // Unlimited queued requests waiting for a free connection

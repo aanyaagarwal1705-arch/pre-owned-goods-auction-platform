@@ -738,8 +738,7 @@ app.use((err, req, res, next) => {
 // START SERVER
 // -------------------------------------------------------------
 
-app.listen(PORT, async () => {
-  console.log(`===============================================`);
+app.listen(PORT, '0.0.0.0', async () => {  console.log(`===============================================`);
   console.log(`Server listening at: http://localhost:${PORT}`);
   console.log(`Testing database connection...`);
   await testConnection();
