@@ -24,7 +24,7 @@ export default function AuctionDetailModal({
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`/api/auctions/${auctionId}`);
+const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/auctions/${auctionId}`);
       const data = await res.json();
 
       if (!res.ok || !data.success) {
@@ -66,8 +66,8 @@ export default function AuctionDetailModal({
     setBidSuccess(null);
 
     try {
-      const res = await fetch('/api/bids', {
-        method: 'POST',
+const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/bids`, {
+          method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
